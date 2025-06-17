@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <motion.header 
@@ -27,7 +29,7 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline">Login</Button>
+            <Button variant="outline" onClick={() => navigate('/login')}>Login</Button>
             <Button>Start Learning</Button>
           </div>
 
@@ -56,7 +58,7 @@ const Header = () => {
               <a href="#quizzes" className="text-gray-700 hover:text-blue-600 transition-colors">Quizzes</a>
               <a href="#contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
               <div className="flex space-x-4 pt-4">
-                <Button variant="outline" size="sm">Login</Button>
+                <Button variant="outline" size="sm" onClick={() => navigate('/login')}>Login</Button>
                 <Button size="sm">Start Learning</Button>
               </div>
             </nav>
