@@ -19,7 +19,7 @@ interface QuizFiltersProps {
 
 export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFiltersProps) => {
   const languages = [
-    { value: '', label: 'All Languages' },
+    { value: 'all', label: 'All Languages' },
     { value: 'spanish', label: 'Spanish' },
     { value: 'french', label: 'French' },
     { value: 'german', label: 'German' },
@@ -31,21 +31,21 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
   ];
 
   const difficulties = [
-    { value: '', label: 'All Levels' },
+    { value: 'all', label: 'All Levels' },
     { value: 'beginner', label: 'Beginner' },
     { value: 'intermediate', label: 'Intermediate' },
     { value: 'advanced', label: 'Advanced' },
   ];
 
   const durations = [
-    { value: '', label: 'Any Duration' },
+    { value: 'all', label: 'Any Duration' },
     { value: 'short', label: 'Under 10 min' },
     { value: 'medium', label: '10-30 min' },
     { value: 'long', label: 'Over 30 min' },
   ];
 
   const topics = [
-    { value: '', label: 'All Topics' },
+    { value: 'all', label: 'All Topics' },
     { value: 'grammar', label: 'Grammar' },
     { value: 'vocabulary', label: 'Vocabulary' },
     { value: 'listening', label: 'Listening' },
@@ -56,9 +56,11 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
     { value: 'business', label: 'Business' },
   ];
 
-  const activeFiltersCount = Object.values(filters).filter(value => value !== '').length;
+  const activeFiltersCount = Object.values(filters).filter(value => value !== '' && value !== 'all').length;
 
   const getFilterLabel = (key: string, value: string) => {
+    if (value === '' || value === 'all') return null;
+    
     switch (key) {
       case 'language':
         return languages.find(l => l.value === value)?.label || value;
@@ -71,6 +73,15 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
       default:
         return value;
     }
+  };
+
+  const handleFilterChange = (key: string, value: string) => {
+    onFilterChange(key, value === 'all' ? '' : value);
+  };
+
+  const getCurrentValue = (key: string) => {
+    const currentValue = filters[key as keyof typeof filters];
+    return currentValue === '' ? 'all' : currentValue;
   };
 
   return (
@@ -89,7 +100,7 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="text-sm font-medium mb-2 block">Language</label>
-            <Select value={filters.language} onValueChange={(value) => onFilterChange('language', value)}>
+            <Select value={getCurrentValue('language')} onValueChange={(value) => handleFilterChange('language', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
@@ -105,7 +116,7 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
 
           <div>
             <label className="text-sm font-medium mb-2 block">Difficulty</label>
-            <Select value={filters.difficulty} onValueChange={(value) => onFilterChange('difficulty', value)}>
+            <Select value={getCurrentValue('difficulty')} onValueChange={(value) => handleFilterChange('difficulty', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
@@ -121,7 +132,7 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
 
           <div>
             <label className="text-sm font-medium mb-2 block">Duration</label>
-            <Select value={filters.duration} onValueChange={(value) => onFilterChange('duration', value)}>
+            <Select value={getCurrentValue('duration')} onValueChange={(value) => handleFilterChange('duration', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select duration" />
               </SelectTrigger>
@@ -137,7 +148,7 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
 
           <div>
             <label className="text-sm font-medium mb-2 block">Topic</label>
-            <Select value={filters.topic} onValueChange={(value) => onFilterChange('topic', value)}>
+            <Select value={getCurrentValue('topic')} onValueChange={(value) => handleFilterChange('topic', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select topic" />
               </SelectTrigger>
@@ -157,18 +168,21 @@ export const QuizFilters = ({ filters, onFilterChange, onClearFilters }: QuizFil
           <div className="pt-4 border-t">
             <div className="flex flex-wrap gap-2">
               {Object.entries(filters)
-                .filter(([_, value]) => value !== '')
-                .map(([key, value]) => (
-                  <Badge key={key} variant="secondary" className="flex items-center gap-1">
-                    {getFilterLabel(key, value)}
-                    <button
-                      onClick={() => onFilterChange(key, '')}
-                      className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                ))}
+                .filter(([_, value]) => value !== '' && value !== 'all')
+                .map(([key, value]) => {
+                  const label = getFilterLabel(key, value);
+                  return label ? (
+                    <Badge key={key} variant="secondary" className="flex items-center gap-1">
+                      {label}
+                      <button
+                        onClick={() => onFilterChange(key, '')}
+                        className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ) : null;
+                })}
             </div>
           </div>
         )}

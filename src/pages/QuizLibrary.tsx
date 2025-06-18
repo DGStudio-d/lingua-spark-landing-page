@@ -170,6 +170,22 @@ const QuizLibrary = () => {
     return filtered;
   }, [quizzes, searchTerm, selectedCategory, filters, sortBy]);
 
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      language: '',
+      difficulty: '',
+      duration: '',
+      topic: ''
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -232,7 +248,11 @@ const QuizLibrary = () => {
           {/* Sidebar Filters */}
           <div className="lg:w-80 space-y-6">
             <QuizSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-            <QuizFilters filters={filters} onFiltersChange={setFilters} />
+            <QuizFilters 
+              filters={filters} 
+              onFilterChange={handleFilterChange}
+              onClearFilters={handleClearFilters}
+            />
           </div>
 
           {/* Main Content */}
@@ -288,7 +308,6 @@ const QuizLibrary = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
