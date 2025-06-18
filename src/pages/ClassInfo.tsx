@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -9,8 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Clock, Users, Star, BookOpen, DollarSign } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import ClassEnrollmentForm from '@/components/ClassEnrollmentForm';
 import ClassPhotoGallery from '@/components/ClassPhotoGallery';
 import ClassFAQ from '@/components/ClassFAQ';
