@@ -1,142 +1,188 @@
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle, Clock, Users, Award, ArrowRight, Play } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-const LevelAssessment = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+const languages = [
+  { id: 'spanish', name: 'Spanish', flag: '🇪🇸', color: 'from-red-500 to-yellow-500' },
+  { id: 'french', name: 'French', flag: '🇫🇷', color: 'from-blue-500 to-red-500' },
+  { id: 'german', name: 'German', flag: '🇩🇪', color: 'from-gray-800 to-red-600' },
+  { id: 'italian', name: 'Italian', flag: '🇮🇹', color: 'from-green-500 to-red-500' },
+  { id: 'japanese', name: 'Japanese', flag: '🇯🇵', color: 'from-red-600 to-white' },
+  { id: 'chinese', name: 'Chinese', flag: '🇨🇳', color: 'from-red-600 to-yellow-400' }
+];
 
-  const languages = ['English', 'Spanish', 'French', 'German', 'Mandarin', 'Japanese'];
-  
-  const levels = [
-    { code: 'A1', name: 'Beginner', description: 'Can understand and use familiar everyday expressions' },
-    { code: 'A2', name: 'Elementary', description: 'Can communicate in simple and routine tasks' },
-    { code: 'B1', name: 'Intermediate', description: 'Can deal with most situations while traveling' },
-    { code: 'B2', name: 'Upper-Intermediate', description: 'Can interact with a degree of fluency' },
-    { code: 'C1', name: 'Advanced', description: 'Can express ideas fluently and spontaneously' },
-    { code: 'C2', name: 'Proficient', description: 'Can understand virtually everything with ease' }
+const levels = [
+  { id: 'a1', name: 'A1 - Beginner', description: 'Basic words and phrases' },
+  { id: 'a2', name: 'A2 - Elementary', description: 'Simple conversations' },
+  { id: 'b1', name: 'B1 - Intermediate', description: 'Clear communication' },
+  { id: 'b2', name: 'B2 - Upper Intermediate', description: 'Fluent discussions' },
+  { id: 'c1', name: 'C1 - Advanced', description: 'Complex texts and ideas' },
+  { id: 'c2', name: 'C2 - Proficient', description: 'Native-like fluency' }
+];
+
+export const LevelAssessment = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('');
+  const [hoveredLevel, setHoveredLevel] = useState<string>('');
+
+  const features = [
+    { icon: Clock, text: 'Takes only 15 minutes' },
+    { icon: CheckCircle, text: 'Accurate level assessment' },
+    { icon: Award, text: 'Personalized learning plan' },
+    { icon: Users, text: 'Used by 50,000+ students' }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-blue-50 to-white">
+    <section className="py-20 bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Discover Your Language Level
+        <div className="text-center mb-16">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Find Your Perfect Starting Level
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Take our comprehensive assessment to find the perfect starting point 
-            for your language learning journey
+            Take our free assessment quiz to discover your current language level and get personalized 
+            recommendations for your learning journey.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="border-0 shadow-2xl overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8">
-                <CardHeader className="text-center p-0">
-                  <CardTitle className="text-2xl md:text-3xl font-bold text-white mb-4">
-                    Free Language Level Assessment
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Assessment Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="shadow-xl border-0">
+                <CardHeader className="text-center pb-6">
+                  <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
+                    Free Language Assessment
                   </CardTitle>
-                  <p className="text-blue-100 text-lg">
-                    Personalized evaluation in just 15 minutes
+                  <p className="text-gray-600">
+                    Choose a language and discover your level
                   </p>
                 </CardHeader>
-              </div>
-
-              <CardContent className="p-8">
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Select Language to Test:
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {languages.map((language) => (
-                      <button
-                        key={language}
-                        onClick={() => setSelectedLanguage(language)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                          selectedLanguage === language
-                            ? 'bg-blue-600 text-white shadow-lg'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {language}
-                      </button>
-                    ))}
+                
+                <CardContent className="space-y-6">
+                  {/* Language Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      Select Language to Assess
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {languages.map((language) => (
+                        <button
+                          key={language.id}
+                          onClick={() => setSelectedLanguage(language.id)}
+                          className={`p-3 rounded-lg border-2 transition-all ${
+                            selectedLanguage === language.id
+                              ? 'border-blue-500 bg-blue-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <span className="text-2xl">{language.flag}</span>
+                            <span className="font-medium text-sm">{language.name}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                    European Framework Reference Levels:
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {levels.map((level, index) => (
-                      <motion.div
-                        key={level.code}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors duration-300"
-                      >
-                        <div className="flex-shrink-0">
-                          <span className={`inline-block w-10 h-10 rounded-full text-white text-sm font-bold flex items-center justify-center ${
-                            level.code.startsWith('A') ? 'bg-green-500' :
-                            level.code.startsWith('B') ? 'bg-yellow-500' : 'bg-red-500'
-                          }`}>
-                            {level.code}
-                          </span>
+                  {/* Features */}
+                  <div className="space-y-3">
+                    {features.map((feature, index) => {
+                      const Icon = feature.icon;
+                      return (
+                        <div key={index} className="flex items-center space-x-3">
+                          <div className="flex-shrink-0">
+                            <Icon className="h-5 w-5 text-green-600" />
+                          </div>
+                          <span className="text-sm text-gray-700">{feature.text}</span>
                         </div>
-                        <div>
-                          <div className="font-semibold text-gray-900">{level.name}</div>
-                          <div className="text-sm text-gray-600">{level.description}</div>
-                        </div>
-                      </motion.div>
-                    ))}
+                      );
+                    })}
                   </div>
-                </div>
 
-                <div className="text-center space-y-4">
-                  <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600 mb-6">
-                    <div className="flex items-center justify-center space-x-2">
-                      <span className="text-blue-600">⏱️</span>
-                      <span>15-20 minutes</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <span className="text-blue-600">📊</span>
-                      <span>Instant results</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <span className="text-blue-600">🎯</span>
-                      <span>Personalized recommendations</span>
-                    </div>
-                  </div>
-                  
-                  <Button size="lg" className="text-lg px-8 py-4">
-                    Start {selectedLanguage} Assessment
+                  {/* Start Button */}
+                  <Button 
+                    className="w-full h-12 text-lg"
+                    disabled={!selectedLanguage}
+                  >
+                    <Play className="mr-2 h-5 w-5" />
+                    Start Free Assessment
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                   
-                  <p className="text-sm text-gray-500">
-                    No registration required • Completely free
+                  <p className="text-xs text-gray-500 text-center">
+                    No registration required • Instant results • Completely free
                   </p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Level Guide */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-6"
+            >
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Language Proficiency Levels
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Our assessments follow the Common European Framework of Reference (CEFR) 
+                  standards to accurately measure your language abilities.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                {levels.map((level, index) => (
+                  <motion.div
+                    key={level.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    onMouseEnter={() => setHoveredLevel(level.id)}
+                    onMouseLeave={() => setHoveredLevel('')}
+                    className={`p-4 rounded-lg border transition-all cursor-pointer ${
+                      hoveredLevel === level.id
+                        ? 'border-blue-500 bg-blue-50 shadow-md'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-semibold text-gray-900">{level.name}</div>
+                        <div className="text-sm text-gray-600">{level.description}</div>
+                      </div>
+                      <Badge 
+                        variant={hoveredLevel === level.id ? 'default' : 'secondary'}
+                        className="ml-4"
+                      >
+                        {level.id.toUpperCase()}
+                      </Badge>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg">
+                <h4 className="font-bold text-lg mb-2">Get Your Results Instantly</h4>
+                <p className="text-sm opacity-90">
+                  After completing the assessment, you'll receive a detailed report with your 
+                  proficiency level, strengths, areas for improvement, and personalized course recommendations.
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
-
-export default LevelAssessment;
