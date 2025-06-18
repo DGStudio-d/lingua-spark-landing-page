@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Search, Filter, Grid, List, Star, Clock, Users, BookmarkPlus, Play } from 'lucide-react';
@@ -289,6 +288,7 @@ const QuizLibrary = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };

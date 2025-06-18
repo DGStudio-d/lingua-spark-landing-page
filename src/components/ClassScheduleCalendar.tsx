@@ -5,8 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 
+interface ClassScheduleInfo { // Renamed from ClassScheduleData to be more specific
+  schedule: {
+    time: string;
+    days: string[];
+  };
+  // Add other properties used from classData if any
+  // For example, if classData.name was used: name?: string;
+}
+
 interface ClassScheduleCalendarProps {
-  classData: any;
+  classData: ClassScheduleInfo;
 }
 
 const ClassScheduleCalendar: React.FC<ClassScheduleCalendarProps> = ({ classData }) => {
