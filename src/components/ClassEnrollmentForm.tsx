@@ -23,8 +23,16 @@ const enrollmentSchema = z.object({
 
 type EnrollmentFormData = z.infer<typeof enrollmentSchema>;
 
+interface ClassData {
+  name: string;
+  level: string;
+  price: number;
+  duration: string;
+  sessionsPerWeek: number; // Assuming this is a number based on context elsewhere
+}
+
 interface ClassEnrollmentFormProps {
-  classData: any;
+  classData: ClassData;
   onClose: () => void;
 }
 

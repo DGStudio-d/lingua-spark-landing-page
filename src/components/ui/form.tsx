@@ -7,25 +7,21 @@ import {
   FieldPath,
   FieldValues,
   FormProvider,
-  useFormContext,
+  // useFormContext, // Moved to form.lib.ts via useFormField
 } from "react-hook-form"
-
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
+import {
+  FormFieldContext,
+  FormItemContext,
+  useFormField,
+  // FormFieldContextValue, // Not directly used by consumers
+  // FormItemContextValue, // Not directly used by consumers
+} from "./form.lib"
 
 const Form = FormProvider
 
-type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = {
-  name: TName
-}
-
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
-
+// FormField is a component, so it stays
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -36,39 +32,12 @@ const FormField = <
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
     </FormFieldContext.Provider>
-  )
-}
+  );
+};
 
-const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext)
-  const itemContext = React.useContext(FormItemContext)
-  const { getFieldState, formState } = useFormContext()
+// useFormField is now imported
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
-  if (!fieldContext) {
-    throw new Error("useFormField should be used within <FormField>")
-  }
-
-  const { id } = itemContext
-
-  return {
-    id,
-    name: fieldContext.name,
-    formItemId: `${id}-form-item`,
-    formDescriptionId: `${id}-form-item-description`,
-    formMessageId: `${id}-form-item-message`,
-    ...fieldState,
-  }
-}
-
-type FormItemContextValue = {
-  id: string
-}
-
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-)
+// FormItem, FormLabel, FormControl, FormDescription, FormMessage are components and stay.
 
 const FormItem = React.forwardRef<
   HTMLDivElement,
@@ -165,7 +134,7 @@ const FormMessage = React.forwardRef<
 FormMessage.displayName = "FormMessage"
 
 export {
-  useFormField,
+  // useFormField, // This is now imported from form.lib.ts, but also re-exported for consumers
   Form,
   FormItem,
   FormLabel,
@@ -173,4 +142,5 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  // useFormField, // Consumers should import from ./form.lib.ts
 }

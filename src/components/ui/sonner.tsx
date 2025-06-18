@@ -1,5 +1,6 @@
 import { useTheme } from "next-themes"
-import { Toaster as Sonner, toast } from "sonner"
+import { Toaster as Sonner } from "sonner"
+import { toast } from "./sonner.lib" // Import the toast function
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
@@ -26,4 +27,5 @@ const Toaster = ({ ...props }: ToasterProps) => {
   )
 }
 
-export { Toaster, toast }
+export { Toaster } // Export only the component
+// toast is in sonner.lib.ts, users should import from there if needed.
